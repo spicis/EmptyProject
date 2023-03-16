@@ -1,0 +1,42 @@
+server:
+  port: 8081
+  servlet-path: /emptyProject
+
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/mysql?userUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimun-idel: 5
+      idle-timeout: 6000000
+      maximum-pool-size: 20
+      max-lifetime: 18000000
+      connection-timeout: 6000
+      connection-test-query: SELECT 1 FROM DUAL
+  servlet:
+    multipart:
+      enabled: true
+      location: files
+      maxRequestSize: 100Mb
+      maxFileSize: 100Mb
+  http:
+    multipart:
+      maxRequestSize: 100Mb
+      maxFileSize: 100Mb
+
+mybatis:
+  config-location: classpath:mybatis/sqlMapConfig.xml
+  mapper-locations:
+    - classpath:mybatis/mapper/*.xml
+    - classpath:mybatis/mapper/simple/*.xml
+  type-aliases-package: com.spicis.model.dto.simple
+
+param:
+  mini-program:
+    appId: xxxx
+    secretId: xxxx
+    url:
+

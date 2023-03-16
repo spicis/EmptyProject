@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="GBK"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="200"/>
+        <property name="maxIdle" value="100"/>
+        <property name="minIdle" value="50"/>
+        <property name="maxWaitMillis" value="1200"/>
+    </bean>
+
+    <bean id="redisClient" class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="host" value="127.0.0.1"/>
+        <constructor-arg name="port" value="6379"/>
+        <constructor-arg name="password" value="root"/>
+        <constructor-arg name="timeout" value="3000"/>
+        <constructor-arg name="database" value="0"/>
+        <constructor-arg name="poolConfig" ref="jedisPoolConfig"/>
+    </bean>
+</beans>

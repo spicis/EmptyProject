@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <Properties>
+        <property name="LOG_HOME">/home/emptyProject/application/meihua/logs</property>
+    </Properties>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="infoAppender"/>
+        </Root>
+
+        <Logger name="errorLogger" level="error" includeLocation="true" additivity="false">
+            <AppenderRef ref="errorAppender"/>
+        </Logger>
+
+        <Logger name="infoLogger" level="info" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="infoAppender"/>
+        </Logger>
+    </Loggers>
+
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %t [%c(%L)]-[%p] | %m%n</Pattern>
+            </PatternLayout>
+        </Console>
+
+        <RollingFile name="errorAppender" fileName="${LOG_HOME}/errorLog.log" filePattern="${LOG_HOME}/errorLog-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %t [%c(%L)]-[%p] | %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="30 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy fileIndex="max" max="10"/>
+        </RollingFile>
+
+        <RollingFile name="infoAppender" fileName="${LOG_HOME}/infoLog.log" filePattern="${LOG_HOME}/infoLog-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %t [%c(%L)]-[%p] | %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="30 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy fileIndex="max" max="10"/>
+        </RollingFile>
+    </Appenders>
+
+</configuration>
