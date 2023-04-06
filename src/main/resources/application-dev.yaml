@@ -34,6 +34,17 @@ mybatis:
     - classpath:mybatis/mapper/simple/*.xml
   type-aliases-package: com.spicis.model.dto.simple
 
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password: null
+  timeout: 3000
+  maxTotal: 200
+  minIdle: 100
+  maxIdle: 100
+  maxWaitMillis: 1200
+
+
 param:
   mini-program:
     appId: xxxx

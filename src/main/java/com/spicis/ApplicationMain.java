@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @ComponentScan
 @MapperScan(basePackages = {"com.spicis.dao"})
-@ImportResource(locations = "redis.xml")
 @EnableAspectJAutoProxy(exposeProxy = true)
 @SpringBootApplication(scanBasePackages = "com.spicis")
 @EnableScheduling
