@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
     <Properties>
-        <property name="LOG_HOME">/home/emptyProject/application/meihua/logs</property>
+        <property name="LOG_HOME">/home/EmptyProject/application/EmptyProject/logs</property>
     </Properties>
 
     <Loggers>
@@ -11,12 +11,18 @@
         </Root>
 
         <Logger name="errorLogger" level="error" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="errorAppender"/>
         </Logger>
 
         <Logger name="infoLogger" level="info" includeLocation="true" additivity="false">
             <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="infoAppender"/>
+        </Logger>
+
+        <Logger name="traceLogger" level="info" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="traceAppender"/>
         </Logger>
     </Loggers>
 
@@ -27,7 +33,7 @@
             </PatternLayout>
         </Console>
 
-        <RollingFile name="errorAppender" fileName="${LOG_HOME}/errorLog.log" filePattern="${LOG_HOME}/errorLog-%d{yyyy-MM-dd}.log">
+        <RollingFile name="errorAppender" fileName="${LOG_HOME}/error.log" filePattern="${LOG_HOME}/error-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %t [%c(%L)]-[%p] | %m%n</Pattern>
             </PatternLayout>
@@ -38,13 +44,24 @@
             <DefaultRolloverStrategy fileIndex="max" max="10"/>
         </RollingFile>
 
-        <RollingFile name="infoAppender" fileName="${LOG_HOME}/infoLog.log" filePattern="${LOG_HOME}/infoLog-%d{yyyy-MM-dd}.log">
+        <RollingFile name="infoAppender" fileName="${LOG_HOME}/info.log" filePattern="${LOG_HOME}/info-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %t [%c(%L)]-[%p] | %m%n</Pattern>
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="30 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy fileIndex="max" max="10"/>
+        </RollingFile>
+
+        <RollingFile name="traceAppender" fileName="${LOG_HOME}/trace.log" filePattern="${LOG_HOME}/trace-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <Pattern>%m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="200 MB"/>
             </Policies>
             <DefaultRolloverStrategy fileIndex="max" max="10"/>
         </RollingFile>
