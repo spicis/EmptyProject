@@ -1,6 +1,7 @@
 package com.spicis.config;
 
 import com.spicis.filter.AuthInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -9,14 +10,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class InterceptorConfig extends WebMvcConfigurerAdapter {
 
+    @Autowired
+    private AuthInterceptor authInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor())
+        registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**");
     }
 
-    @Bean
-    public AuthInterceptor authInterceptor() {
-        return new AuthInterceptor();
-    }
 }

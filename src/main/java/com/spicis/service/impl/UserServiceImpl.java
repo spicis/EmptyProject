@@ -44,6 +44,8 @@ public class UserServiceImpl extends BaseService implements IUserService {
             redisService.setnxWithExpire(token, Constants.SESSION_KEY_EX);
 
             LoginWXResp resp = new LoginWXResp();
+            resp.setOpenId(openId);
+            resp.setToken(token);
             return successBean(resp);
         } catch (Exception e) {
             return errorBean();

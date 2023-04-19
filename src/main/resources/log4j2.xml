@@ -2,6 +2,7 @@
 <configuration>
     <Properties>
         <property name="LOG_HOME">/home/EmptyProject/application/EmptyProject/logs</property>
+<!--        <property name="LOG_HOME">../logs</property>-->
     </Properties>
 
     <Loggers>

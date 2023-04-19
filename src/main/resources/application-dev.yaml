@@ -1,6 +1,7 @@
 server:
   port: 8081
-  servlet-path: /emptyProject
+  servlet:
+    context-path: /emptyProject
 
 spring:
   datasource:
@@ -8,8 +9,8 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/mysql?userUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
     password: root
-    type: com.zaxxer.hikari.HikariDataSource
     hikari:
+      type: com.zaxxer.hikari.HikariDataSource
       minimun-idel: 5
       idle-timeout: 6000000
       maximum-pool-size: 20
@@ -20,12 +21,12 @@ spring:
     multipart:
       enabled: true
       location: files
-      maxRequestSize: 100Mb
-      maxFileSize: 100Mb
+      maxRequestSize: 10485760 # 10MB
+      maxFileSize: 104857600 # 100MB
   http:
     multipart:
-      maxRequestSize: 100Mb
-      maxFileSize: 100Mb
+      maxRequestSize: 10485760 # 10MB
+      maxFileSize: 104857600 # 100MB
 
 mybatis:
   config-location: classpath:mybatis/sqlMapConfig.xml
@@ -35,7 +36,7 @@ mybatis:
   type-aliases-package: com.spicis.model.dto.simple
 
 redis:
-  host: 127.0.0.1
+  host: 10.17.50.137
   port: 6379
   password: null
   timeout: 3000
