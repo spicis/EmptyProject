@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Data
 public class HttpContext {
+    private int userId;
     private HttpServletRequest request;
     private HttpServletResponse response;
 

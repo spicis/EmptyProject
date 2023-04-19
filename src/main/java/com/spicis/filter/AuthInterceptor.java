@@ -4,6 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.spicis.constants.Constants;
 import com.spicis.constants.MessageConst;
 import com.spicis.logger.LogFactory;
+import com.spicis.model.Context;
+import com.spicis.model.HttpContext;
+import com.spicis.model.TraceLog;
 import com.spicis.model.response.BaseBean;
 import com.spicis.service.redis.IRedisService;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +28,10 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         boolean result = true;
+
+        //构造上下文
+        new Context(request, response);
+
         if ("/error".equals(request.getPathInfo())) {
             return true;
         }
@@ -42,14 +49,43 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
     }
 
     private boolean checkLogin(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        boolean result = true;
         String token = request.getHeader(Constants.USER_TOKEN);
-        if (StringUtils.isBlank(token) || StringUtils.isBlank(redisService.get(token))) {
+        if (StringUtils.isBlank(token)) {
+            result = false;
+        } else {
+            String sessionId = redisService.get(token);
+            if (StringUtils.isBlank(sessionId)) {
+                result = false;
+            } else {
+                //取userId
+                String[] strArr = sessionId.split("###");
+                if (strArr != null && strArr.length == 2) {
+                    String userIdStr = strArr[1];
+                    try {
+                        int userId = Integer.parseInt(userIdStr);
+
+                        ThreadLocal<TraceLog> trace = Context.trace;
+                        TraceLog traceLog = trace.get();
+                        traceLog.setUserId(userIdStr);
+
+                        ThreadLocal<HttpContext> threadLocal = Context.httpContext;
+                        HttpContext httpContext = threadLocal.get();
+                        httpContext.setUserId(userId);
+                    } catch (NumberFormatException e) {
+                        LogFactory.getErrorLogger().logError("getLoginUserId exception", e);
+                        result = false;
+                    }
+                }
+            }
+        }
+
+        if (!result) {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json; charset=utf-8");
             PrintWriter out = response.getWriter();
             try {
                 BaseBean<Object> outBean = new BaseBean(MessageConst.TOKEN_EXPIRE, MessageConst.ILLEGAL_TOKEN, null);
-                out = response.getWriter();
                 out.append(JSON.toJSONString(outBean));
                 return false;
             } catch (Exception e) {

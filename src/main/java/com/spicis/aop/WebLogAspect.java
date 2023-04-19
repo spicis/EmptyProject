@@ -10,10 +10,12 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
 @Aspect
@@ -27,7 +29,24 @@ public class WebLogAspect {
 
     @Before("webLog()")
     public void doBefore(JoinPoint joinPoint) {
+        try {
+            Object[] args = joinPoint.getArgs();
+            String params = "{}";
+            for (int i = 0; i < args.length; i++) {
+                Object arg = args[i];
+                if (arg instanceof HttpServletRequest || arg instanceof HttpServletResponse
+                        || arg instanceof BindingResult) {
 
+                } else {
+                    params = JSON.toJSONString(arg);
+                }
+            }
+            ThreadLocal<TraceLog> trace = Context.trace;
+            TraceLog traceLog = trace.get();
+            traceLog.setRequest(params);
+        } catch (Exception e) {
+            LogFactory.getErrorLogger().logError("doBefore exception ", e);
+        }
     }
 
     @AfterReturning(returning = "ret", pointcut = "webLog()")

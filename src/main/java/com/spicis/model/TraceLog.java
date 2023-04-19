@@ -10,6 +10,7 @@ import java.util.Date;
 
 @Data
 public class TraceLog {
+    private String userId;
     private String requestId;
     private String method;
     private String startTime;
@@ -20,7 +21,6 @@ public class TraceLog {
     private String request;
     private String response;
     private String url;
-    private String params;
     @JSONField(serialize = false)
     private TraceLog innerTrace;
 

@@ -44,6 +44,8 @@ redis:
   maxIdle: 100
   maxWaitMillis: 1200
 
+caffeine:
+  default: 1000,3600
 
 param:
   mini-program:

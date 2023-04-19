@@ -33,7 +33,7 @@ public class RedisLogAspect {
         traceLog.setRequestId(requestId);
         traceLog.setMethod("Redis");
         traceLog.setUrl(method);
-        traceLog.setParams(params);
+        traceLog.setRequest(params);
         traceLog.begin();
 
         contextTrace.setInnerTrace(traceLog);

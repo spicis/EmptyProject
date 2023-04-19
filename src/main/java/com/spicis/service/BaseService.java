@@ -4,6 +4,7 @@ import com.spicis.constants.Constants;
 import com.spicis.constants.MessageConst;
 import com.spicis.logger.LogFactory;
 import com.spicis.model.Context;
+import com.spicis.model.HttpContext;
 import com.spicis.model.response.BaseBean;
 import com.spicis.service.redis.IRedisService;
 import org.apache.commons.lang3.StringUtils;
@@ -42,23 +43,7 @@ public class BaseService {
         return new BaseBean(MessageConst.SUCCESS, MessageConst.SUCCESS_MESSAGE, null);
     }
 
-    public Integer getLoginUserId(Context context) {
-        try {
-            HttpServletRequest request = context.getRequest();
-            String token = request.getHeader(Constants.USER_TOKEN);
-            if (StringUtils.isNotBlank(token)) {
-                String sessionId = redisService.get(token);
-                if (StringUtils.isNotBlank(sessionId)) {
-                    String[] strArr = sessionId.split("###");
-                    if (strArr != null && strArr.length == 2) {
-                        String userIdStr = strArr[1];
-                        return Integer.parseInt(userIdStr);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            LogFactory.getErrorLogger().logError("getLoginUserId exception", e);
-        }
-        return null;
+    public Integer getLoginUserId(HttpContext context) {
+        return context.getUserId();
     }
 }

@@ -13,23 +13,15 @@ public class Context {
 
     public static ThreadLocal<TraceLog> trace = new ThreadLocal<>();
     public static ThreadLocal<HttpContext> httpContext = new ThreadLocal<>();
-    private HttpServletRequest request;
-    private HttpServletResponse response;
 
     public Context(HttpServletRequest request, HttpServletResponse response) {
-        this.request = request;
-        this.response = response;
-
         String url = request.getRequestURL().toString();
         String method = request.getMethod();
-        Map<String, String[]> parameterMap = request.getParameterMap();
-        String params = JSON.toJSONString(parameterMap);
 
         TraceLog traceLog = new TraceLog();
         traceLog.setRequestId(UUID.randomUUID().toString());
         traceLog.setUrl(url);
         traceLog.setMethod(method);
-        traceLog.setParams(params);
         traceLog.begin();
         trace.set(traceLog);
 
